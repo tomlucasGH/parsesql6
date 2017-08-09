@@ -3,17 +3,33 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using ParseSQL2.DAL;
+using ParseSQL2.Models;
+
 
 namespace ParseSQL6.Controllers
 {
     [Route("api/[controller]")]
     public class ValuesController : Controller
     {
+        private QueryContext db = new QueryContext();
         // GET api/values
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IEnumerable<datasources> Get()
         {
-            return new string[] { "value1", "value2" };
+            List<datasources> datasourceslist = new List<datasources>();
+            foreach (datasources ds in db.datasources)
+            {
+                datasourceslist.Add(new datasources
+                {
+                    type = ds.type,
+                    image_uri = ds.image_uri,
+                    name = ds.name
+                }
+                    );
+
+            }
+            return datasourceslist;
         }
 
         // GET api/values/5
